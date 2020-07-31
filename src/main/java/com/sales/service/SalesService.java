@@ -25,19 +25,16 @@ public class SalesService {
 	public Product addProductforSale(ProductDTO productDTO) {
 		productDTO.setOrderDescription("ReadyToSale");
 		Product product = getModelMapper().map(productDTO, Product.class);
-		Product productSave = repository.save(product);
-		return productSave;
+		return repository.save(product);
 	}
 
 	public Product getProductByName(String name) {
-		Product product = repository.findByName(name);
-		return product;
+		return repository.findByName(name);
 	}
 
 	@Transactional
 	public int updateProductByName(String name, String orderDescription) {
-		int result = repository.updateProductByName(orderDescription, name);
-		return result;
+		return repository.updateProductByName(orderDescription, name);
 	}
 
 	public List<Product> getAllProducts() {
@@ -48,8 +45,6 @@ public class SalesService {
 	@Transactional
 	public int cancelProductByName(String name) {
 		String cancel = "canceled";
-		int result = repository.cancelProductByName(cancel, name);
-		return result;
-
+		return repository.cancelProductByName(cancel, name);
 	}
 }
