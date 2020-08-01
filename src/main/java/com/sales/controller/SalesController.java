@@ -1,6 +1,9 @@
 package com.sales.controller;
 
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.sales.dto.ProductDTO;
 import com.sales.model.Product;
 import com.sales.service.SalesService;
@@ -19,6 +21,8 @@ import com.sales.service.SalesService;
 public class SalesController {
 	@Autowired
 	SalesService service;
+	
+	private static final Logger log = LogManager.getLogger(SalesController.class);
 
 	@PostMapping("/orderProduct/{name}")
 	public String orderProduct(@PathVariable String name) {
@@ -35,8 +39,7 @@ public class SalesController {
 				message = "Not able to place Order";
 			}
 		} catch (Exception ex) {
-			message = "Not able to process the Request..";
-			ex.printStackTrace();
+			log.debug(ex.getMessage());
 		}
 		return message;
 	}
@@ -47,7 +50,7 @@ public class SalesController {
 		try {
 			allProducts = service.getAllProducts();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(ex.getMessage());
 		}
 		return allProducts;
 	}
@@ -58,7 +61,7 @@ public class SalesController {
 		try {
 			product = service.getProductByName(name);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(ex.getMessage());
 		}
 		return product;
 	}
@@ -71,7 +74,7 @@ public class SalesController {
 			message = "Order Cancelled succesfully......";
 		} catch (Exception e) {
 			message = "Not able to process the Request";
-			e.printStackTrace();
+			log.debug(e.getMessage());
 		}
 		return message;
 
@@ -86,7 +89,7 @@ public class SalesController {
 			result = true;
 		} catch (Exception ex) {
 			result = false;
-			ex.printStackTrace();
+			log.debug(ex.getMessage());
 		}
 		return result;
 	}
