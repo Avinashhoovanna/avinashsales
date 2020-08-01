@@ -23,11 +23,13 @@ public class SalesController {
 	SalesService service;
 	
 	private static final Logger log = LogManager.getLogger(SalesController.class);
-
+	
+	//API used for ordering the product
 	@PostMapping("/orderProduct/{name}")
 	public String orderProduct(@PathVariable String name) {
 		String message = "";
 		try {
+			log.info("Inside order product method.");
 			if (null != name) {
 				Product product = service.getProductByName(name);
 				if (null != product) {
@@ -43,11 +45,13 @@ public class SalesController {
 		}
 		return message;
 	}
-
+	
+	//API used for getting all products in table
 	@GetMapping("/getAllProducts")
 	public List<Product> getAllItems() {
 		List<Product> allProducts = null;
 		try {
+			log.debug("Inside getAllItems method.");
 			allProducts = service.getAllProducts();
 		} catch (Exception ex) {
 			log.debug(ex.getMessage());
@@ -55,21 +59,25 @@ public class SalesController {
 		return allProducts;
 	}
 
+	//API for getting product based on name
 	@GetMapping("/getProductByName/{name}")
 	public Product getItemByName(@PathVariable String name) {
 		Product product = null;
 		try {
+			log.debug("Inside getItemByName method");
 			product = service.getProductByName(name);
 		} catch (Exception ex) {
 			log.debug(ex.getMessage());
 		}
 		return product;
 	}
-
+	
+	//API for canceling the product
 	@DeleteMapping("/cancelProductByName/{name}")
 	public String cancelProductByName(@PathVariable String name) {
 		String message = "";
 		try {
+			log.debug("Inside cancelProductByName method");
 			service.cancelProductByName(name);
 			message = "Order Cancelled succesfully......";
 		} catch (Exception e) {
@@ -80,11 +88,12 @@ public class SalesController {
 
 	}
 
-	// used by Inventory Microservice..
+	// used by Inventory Microservice for adding product.
 	@PostMapping("/addProductForSale")
 	public boolean addProduct(@RequestBody ProductDTO productDTO) {
 		boolean result = false;
 		try {
+			log.debug("Inside addProduct method called by Inventory Service");
 			service.addProductforSale(productDTO);
 			result = true;
 		} catch (Exception ex) {
